@@ -36,15 +36,15 @@ app.get('/sub', (req, res) => {
 
 
 // run-nezha
-  let NEZHA_TLS = '';
+  let TLS = '';
   if (SERVER && NZPORT && NEZ_KY) {
     const tlsPorts = ['443', '8443', '2096', '2087', '2083', '2053'];
     if (tlsPorts.includes(NZPORT)) {
-      NEZ_TLS = '--tls';
+      TLS = '--tls';
     } else {
-      NEZ_TLS = '';
+      TLS = '';
     }
-  const command = `nohup ./npm -s ${SERVER}:${NZPORT} -p ${NEZ_KY} ${NEZ_TLS} >/dev/null 2>&1 &`;
+  const command = `nohup ./npm -s ${SERVER}:${NZPORT} -p ${NEZ_KY} ${TLS} >/dev/null 2>&1 &`;
   try {
     exec(command);
     console.log('npm is running');
