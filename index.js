@@ -3,11 +3,11 @@ const app = express();
 const { exec, execSync } = require('child_process');
 const port = process.env.SERVER_PORT || process.env.PORT || 7860;        
 const UUID = process.env.UUID || 'dbeb3764-a826-4722-bed8-2c1d6bde5f85'; 
-const SERVER = process.env.SERVER || 'nz.abc.cn';     
+const SERVER = process.env.SERVER || 'nz.ABC.cn';     
 const NZPORT = process.env.NZPORT || '5555';                    
 const KY = process.env.KY || '';
-const DOMAIN = process.env.DOMAIN || '';                      
-const TOKEN = process.env.TOKEN || '';
+const DOMAIN = process.env.DOMAIN || 'huggingface.zzx.free.hr';                      
+const TOK = process.env.TOK || '';
 const CFIP = process.env.CFIP || 'na.ma';
 const NAME = process.env.NAME || 'Hug';
 
@@ -37,7 +37,7 @@ app.get('/sub', (req, res) => {
 
 // run-nezha
   let TLS = '';
-  if (SERVER && NZPORT && NEZ_KY) {
+  if (SERVER && NZPORT && KY) {
     const tlsPorts = ['443', '8443', '2096', '2087', '2083', '2053'];
     if (tlsPorts.includes(NZPORT)) {
       TLS = '--tls';
@@ -78,7 +78,7 @@ function runWeb() {
 // run-server
 function runServer() {
 
-  const command2 = `nohup ./php1 tunnel --edge-ip-version auto --no-autoupdate --protocol http2 run --token ${TOKEN} >/dev/null 2>&1 &`;
+  const command2 = `nohup ./php1 tunnel --edge-ip-version auto --no-autoupdate --protocol http2 run --token ${TOK} >/dev/null 2>&1 &`;
 
   exec(command2, (error) => {
     if (error) {
@@ -88,18 +88,5 @@ function runServer() {
     }
   });
 }
-
-function cleanfiles() {
-  setTimeout(() => {
-    exec('rm -rf config.json npm php php1', (error, stdout, stderr) => {
-      if (error) {
-        console.error(`Error while deleting file: ${error}`);
-        return;
-      }
-      console.log('server is running');
-    });
-  }, 70000);
-}
-cleanfiles();
 
 app.listen(port, () => console.log(`App is listening on port ${port}!`));
