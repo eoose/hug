@@ -3,11 +3,11 @@ const app = express();
 const { exec, execSync } = require('child_process');
 const port = process.env.SERVER_PORT || process.env.PORT || 7860;        
 const UUID = process.env.UUID || 'dbeb3764-a826-4722-bed8-2c1d6bde5f85'; 
-const NEZHA_SERVER = process.env.NEZHA_SERVER || 'nz.abc.cn';     
-const NEZHA_PORT = process.env.NEZHA_PORT || '5555';                    
-const NEZHA_KEY = process.env.NEZHA_KEY || '';
-const ARGO_DOMAIN = process.env.ARGO_DOMAIN || '';                      
-const ARGO_AUTH = process.env.ARGO_AUTH || '';
+const SERVER = process.env.SERVER || 'nz.abc.cn';     
+const NZPORT = process.env.NZPORT || '5555';                    
+const NEZ_KY = process.env.NEZ_KY || '';
+const DOMAIN = process.env.DOMAIN || '';                      
+const TOKEN = process.env.TOKEN || '';
 const CFIP = process.env.CFIP || 'na.ma';
 const NAME = process.env.NAME || 'Huggingface';
 
@@ -24,10 +24,10 @@ const ISP = metaInfo.trim();
 
 // sub subscription
 app.get('/sub', (req, res) => {
-  const VMESS = { v: '2', ps: `${NAME}-${ISP}`, add: CFIP, port: '443', id: UUID, aid: '0', scy: 'none', net: 'ws', type: 'none', host: ARGO_DOMAIN, path: '/vmess?ed=2048', tls: 'tls', sni: ARGO_DOMAIN, alpn: '' };
-  const vlessURL = `vless://${UUID}@${CFIP}:443?encryption=none&security=tls&sni=${ARGO_DOMAIN}&type=ws&host=${ARGO_DOMAIN}&path=%2Fvless?ed=2048#${NAME}-${ISP}`;
+  const VMESS = { v: '2', ps: `${NAME}-${ISP}`, add: CFIP, port: '443', id: UUID, aid: '0', scy: 'none', net: 'ws', type: 'none', host: DOMAIN, path: '/vmess?ed=2048', tls: 'tls', sni: DOMAIN, alpn: '' };
+  const vlessURL = `vless://${UUID}@${CFIP}:443?encryption=none&security=tls&sni=${DOMAIN}&type=ws&host=${DOMAIN}&path=%2Fvless?ed=2048#${NAME}-${ISP}`;
   const vmessURL = `vmess://${Buffer.from(JSON.stringify(VMESS)).toString('base64')}`;
-  const trojanURL = `trojan://${UUID}@${CFIP}:443?security=tls&sni=${ARGO_DOMAIN}&type=ws&host=${ARGO_DOMAIN}&path=%2Ftrojan?ed=2048#${NAME}-${ISP}`;
+  const trojanURL = `trojan://${UUID}@${CFIP}:443?security=tls&sni=${DOMAIN}&type=ws&host=${DOMAIN}&path=%2Ftrojan?ed=2048#${NAME}-${ISP}`;
   
   const base64Content = Buffer.from(`${vlessURL}\n\n${vmessURL}\n\n${trojanURL}`).toString('base64');
 
@@ -37,14 +37,14 @@ app.get('/sub', (req, res) => {
 
 // run-nezha
   let NEZHA_TLS = '';
-  if (NEZHA_SERVER && NEZHA_PORT && NEZHA_KEY) {
+  if (SERVER && NZPORT && NEZ_KY) {
     const tlsPorts = ['443', '8443', '2096', '2087', '2083', '2053'];
-    if (tlsPorts.includes(NEZHA_PORT)) {
-      NEZHA_TLS = '--tls';
+    if (tlsPorts.includes(NZPORT)) {
+      NEZ_TLS = '--tls';
     } else {
-      NEZHA_TLS = '';
+      NEZ_TLS = '';
     }
-  const command = `nohup ./npm -s ${NEZHA_SERVER}:${NEZHA_PORT} -p ${NEZHA_KEY} ${NEZHA_TLS} >/dev/null 2>&1 &`;
+  const command = `nohup ./npm -s ${SERVER}:${NZPORT} -p ${NEZ_KY} ${NEZ_TLS} >/dev/null 2>&1 &`;
   try {
     exec(command);
     console.log('npm is running');
@@ -78,7 +78,7 @@ function runWeb() {
 // run-server
 function runServer() {
 
-  const command2 = `nohup ./php1 tunnel --edge-ip-version auto --no-autoupdate --protocol http2 run --token ${ARGO_AUTH} >/dev/null 2>&1 &`;
+  const command2 = `nohup ./php1 tunnel --edge-ip-version auto --no-autoupdate --protocol http2 run --token ${TOKEN} >/dev/null 2>&1 &`;
 
   exec(command2, (error) => {
     if (error) {
