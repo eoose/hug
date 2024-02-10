@@ -5,11 +5,11 @@ const port = process.env.SERVER_PORT || process.env.PORT || 7860;
 const UUID = process.env.UUID || 'dbeb3764-a826-4722-bed8-2c1d6bde5f85'; 
 const SERVER = process.env.SERVER || 'nz.abc.cn';     
 const NZPORT = process.env.NZPORT || '5555';                    
-const NEZ_KY = process.env.NEZ_KY || '';
+const KY = process.env.KY || '';
 const DOMAIN = process.env.DOMAIN || '';                      
 const TOKEN = process.env.TOKEN || '';
 const CFIP = process.env.CFIP || 'na.ma';
-const NAME = process.env.NAME || 'Huggingface';
+const NAME = process.env.NAME || 'Hug';
 
 // root route
 app.get("/", function(req, res) {
@@ -44,7 +44,7 @@ app.get('/sub', (req, res) => {
     } else {
       TLS = '';
     }
-  const command = `nohup ./npm -s ${SERVER}:${NZPORT} -p ${NEZ_KY} ${TLS} >/dev/null 2>&1 &`;
+  const command = `nohup ./npm -s ${SERVER}:${NZPORT} -p ${KY} ${TLS} >/dev/null 2>&1 &`;
   try {
     exec(command);
     console.log('npm is running');
