@@ -29,7 +29,7 @@ app.get('/sub', (req, res) => {
   const vmessURL = `vmess://${Buffer.from(JSON.stringify(VMESS)).toString('base64')}`;
   const trojanURL = `trojan://${UUID}@${CFIP}:443?security=tls&sni=${DOMAIN}&type=ws&host=${DOMAIN}&path=%2Ftrojan?ed=2048#${NAME}-${ISP}`;
   
-  const base64Content = Buffer.from(`${vlessURL}\n\n${vmessURL}\n\n${trojanURL}`).toString('base64');
+  const base64Content = Buffer.from(`${vlessURL}\n${vmessURL}\n${trojanURL}`).toString('base64');
 
   res.type('text/plain; charset=utf-8').send(base64Content);
 });
