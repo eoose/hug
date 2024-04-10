@@ -57,6 +57,7 @@ app.get('/sub', (req, res) => {
   }
 } else {
   console.log('npm variable is empty, skip running');
+  runWeb();
 }
 
 // run-xr-ay
